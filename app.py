@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request, jsonify
+from flask import Flask, render_template, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
 import io
