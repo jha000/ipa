@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template_string, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
 import io
+from pydub import AudioSegment
 from langdetect import detect
 
 app = Flask(__name__)
@@ -9,6 +10,14 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template('index.html')
+
+def convert_to_wav(audio_bytes, audio_format):
+    audio_data = io.BytesIO(audio_bytes)
+    audio_segment = AudioSegment.from_file(audio_data, format=audio_format)
+    wav_io = io.BytesIO()
+    audio_segment.export(wav_io, format='wav')
+    wav_io.seek(0)
+    return wav_io
 
 def custom_ipa_mapping(text):
     ipa_map = {
@@ -74,14 +83,14 @@ def convert_to_ipa_route():
         return jsonify({'error': 'Please upload an uncompressed audio format like .WAV or .OGG'}), 400
 
     try:
+        audio_data = convert_to_wav(audio_file, audio_format)
         recognizer = sr.Recognizer()
-        audio_data = io.BytesIO(audio_file)
         with sr.AudioFile(audio_data) as source:
             audio_data = recognizer.record(source)
 
         text = recognizer.recognize_google(audio_data)
         language = detect(text)
-
+        
         if language == 'en':
             ipa_transcription = ipa.convert(text)
         else:
