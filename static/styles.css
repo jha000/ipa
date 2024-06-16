@@ -3,10 +3,13 @@ body {
     background-color: #f8f9fa;
     color: #333;
     margin: 0;
-    padding-top: 80px; /* Add padding to prevent overlap with the fixed header */
+    padding-top: 80px;
+    /* Add padding to prevent overlap with the fixed header */
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: flex-start; /* Align items to the top */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: flex-start;
+    /* Align items to the top */
     min-height: 100vh;
 }
 
@@ -17,10 +20,13 @@ header {
     margin-bottom: 50px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: fixed; /* Fixed position to keep the header at the top */
-    top: 0; /* Position at the top */
+    position: fixed;
+    /* Fixed position to keep the header at the top */
+    top: 0;
+    /* Position at the top */
     left: 0;
-    width: 100%; /* Take full width of the viewport */
+    width: 100%;
+    /* Take full width of the viewport */
 }
 
 header h1 {
@@ -41,7 +47,8 @@ header p {
 
 .container {
     max-width: 600px;
-    margin: 100px auto; /* Increased margin to simulate more content in the body */
+    margin: 100px auto;
+    /* Increased margin to simulate more content in the body */
     padding-left: 20px;
     padding-right: 20px;
     background-color: #fff;
@@ -190,4 +197,44 @@ footer {
 footer p {
     margin: 0;
     font-size: 1em;
+}
+
+/* For smaller screens */
+@media only screen and (max-width: 600px) {
+
+
+    .logo {
+        display: none; /* Hide the logo */
+    }
+
+    .container {
+        max-width: 90%;
+        margin: 80px auto;
+        /* Adjusted margin for smaller screens */
+        padding: 10px;
+    }
+
+    .upload-area {
+        padding: 40px;
+    }
+
+    .upload-content span {
+        font-size: 1em;
+    }
+
+    #convert-btn {
+        font-size: 1em;
+        padding: 8px 16px;
+        margin-top: 12px;
+    }
+
+    #output,
+    #error,
+    #loading {
+        font-size: 1.2em;
+    }
+
+    footer p {
+        font-size: 0.9em;
+    }
 }
