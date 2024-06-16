@@ -3,38 +3,42 @@ body {
     background-color: #f8f9fa;
     color: #333;
     margin: 0;
-    padding-top: 80px;
-    /* Add padding to prevent overlap with the fixed header */
+    padding-top: 80px; /* Remove this line */
     display: flex;
     justify-content: center;
-    /* Center horizontally */
     align-items: flex-start;
-    /* Align items to the top */
     min-height: 100vh;
 }
 
 header {
     background-color: #343a40;
     color: #fff;
-    padding: 16px 0;
+    padding: 16px;
     margin-bottom: 50px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: fixed;
-    /* Fixed position to keep the header at the top */
     top: 0;
-    /* Position at the top */
     left: 0;
     width: 100%;
-    /* Take full width of the viewport */
+    z-index: 1000; 
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 100px; /* Adjust as necessary */
 }
 
 header h1 {
     font-size: 1.5em;
+    margin: 10px;
 }
 
 header p {
     font-size: 1em;
+    margin: 10px;
 }
 
 .logo {
@@ -45,78 +49,62 @@ header p {
     transform: translateY(-50%);
 }
 
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 80px; /* Add margin to create space below the header */
+}
+
 .container {
     max-width: 600px;
-    margin: 100px auto;
-    /* Increased margin to simulate more content in the body */
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 20px;
     background-color: #fff;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    flex: 1;
+    margin-right: 20px;
 }
 
 .upload-description {
     margin-bottom: 20px;
 }
 
-.upload-description h3 {
-    margin-bottom: 5px;
-}
-
 .upload-area {
     border: 2px dashed #007bff;
     border-radius: 20px;
-    /* Increased border-radius for a rounded look */
     padding: 60px;
-    /* Increased padding for more space inside the box */
     cursor: pointer;
     margin-bottom: 20px;
     display: flex;
-    /* Use flexbox for vertical alignment */
     justify-content: center;
-    /* Center content horizontally */
     align-items: center;
-    /* Center content vertically */
 }
 
 .upload-content {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
 }
 
 .upload-content i {
-    margin-right: 10px;
-    /* Adjust icon spacing */
+    margin-bottom: 5px; /* Space between icon and text */
 }
+
 
 .upload-content span {
     color: #333;
-    /* Text color */
     font-size: 1.2em;
-    /* Font size */
 }
 
 .upload-area:hover {
     background-color: #e9ecef;
 }
 
-.upload-area p {
-    margin: 0;
-    font-size: 1.2em;
-    color: #007bff;
-}
-
 .upload-area input {
     display: none;
-}
-
-.file-item {
-    margin-bottom: 10px;
-}
-
-.file-item span {
-    margin-right: 10px;
 }
 
 #convert-btn {
@@ -125,7 +113,6 @@ header p {
     font-size: 1.2em;
     cursor: pointer;
     background-color: #007bff;
-    /* Blue background color */
     color: #fff;
     border: none;
     margin-top: 16px;
@@ -135,7 +122,6 @@ header p {
 
 #convert-btn:hover {
     background-color: #0056b3;
-    /* Darker blue on hover */
 }
 
 #output,
@@ -145,7 +131,7 @@ header p {
 }
 
 #output {
-    color: green;
+    color: white;
 }
 
 #error {
@@ -165,11 +151,9 @@ header p {
     0% {
         transform: scale(1);
     }
-
     50% {
         transform: scale(1.05);
     }
-
     100% {
         transform: scale(1);
     }
@@ -181,17 +165,56 @@ header p {
     animation-iteration-count: infinite;
 }
 
+.copy-button {
+    display: none; /* Hide the copy button by default */
+    padding: 8px 16px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #fff; /* Material grey color */
+    color: #000; /* White text color */
+    border: none;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.copy-button:hover {
+    background-color: #6f6f6f; /* Darker shade of material grey for hover */
+}
+
+.ipa-viewer {
+    max-width: 600px;
+    padding: 20px;
+    background-color: #000; /* Dark background color */
+    color: #fff; /* White text color */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-left: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 310px;
+    flex: 1;
+}
+
+.ipa-viewer h2 {
+    color: #fff; /* Green color for IPA header */
+}
+
+
+.terminal-output {
+    white-space: pre-wrap;
+    font-size: 1.2em;
+}
+
+
 footer {
     text-align: center;
-    padding: 16px 0;
+    padding: 10px 0;
     background-color: #212529;
     color: #fff;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    margin-top: 20px;
-    /* Add margin to create space between body and footer */
 }
 
 footer p {
@@ -199,18 +222,25 @@ footer p {
     font-size: 1em;
 }
 
-/* For smaller screens */
 @media only screen and (max-width: 600px) {
-
-
     .logo {
-        display: none; /* Hide the logo */
+        display: none;
     }
 
-    .container {
+    .header-text {
+        margin-left: 0;
+    }
+
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 80px; /* Adjusted margin for smaller screens */
+    }
+
+    .container,
+    .ipa-viewer {
         max-width: 90%;
-        margin: 80px auto;
-        /* Adjusted margin for smaller screens */
+        margin: 10px auto;
         padding: 10px;
     }
 
@@ -232,6 +262,15 @@ footer p {
     #error,
     #loading {
         font-size: 1.2em;
+    }
+
+    .ipa-viewer {
+        max-width: 600px;
+        background-color: #000; /* Dark background color */
+        color: #fff; /* White text color */
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        font-family: 'Courier New', Courier, monospace;
     }
 
     footer p {

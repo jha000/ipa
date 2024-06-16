@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request, jsonify
+from flask import Flask, render_template, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
 import io
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template_string(open('index.html').read())
+    return render_template('index.html')
 
 def convert_to_wav(audio_bytes, audio_format):
     audio_data = io.BytesIO(audio_bytes)
