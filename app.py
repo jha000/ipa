@@ -2,22 +2,15 @@ from flask import Flask, render_template, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
 import io
+import os
 from pydub import AudioSegment
-from langdetect import detect
+import langdetect
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('index.html')
-
-def convert_to_wav(audio_bytes, audio_format):
-    audio_data = io.BytesIO(audio_bytes)
-    audio_segment = AudioSegment.from_file(audio_data, format=audio_format)
-    wav_io = io.BytesIO()
-    audio_segment.export(wav_io, format='wav')
-    wav_io.seek(0)
-    return wav_io
 
 def custom_ipa_mapping(text):
     ipa_map = {
@@ -76,33 +69,48 @@ def convert_to_ipa_route():
     if 'audio' not in request.files:
         return jsonify({'error': 'No audio file provided'}), 400
 
-    audio_file = request.files['audio'].read()
-    audio_format = request.files['audio'].content_type.split('/')[1]
-
-    if audio_format not in ['wav', 'ogg']:
-        return jsonify({'error': 'Please upload an uncompressed audio format like .WAV or .OGG'}), 400
-
     try:
-        audio_data = convert_to_wav(audio_file, audio_format)
+        audio_file = request.files['audio']
+        audio_format = audio_file.filename.rsplit('.', 1)[1].lower()
+
+        # Save the file temporarily
+        temp_filepath = 'temp_audio'  # No file extension initially
+        audio_file.save(temp_filepath)
+
+        # Check if the uploaded file is WAV, if not convert to WAV
+        if audio_format != 'wav':
+            audio = AudioSegment.from_file(temp_filepath, format=audio_format)
+            temp_filepath = temp_filepath + '.wav'
+            audio.export(temp_filepath, format='wav')
+
+        # Recognize speech from the WAV file
         recognizer = sr.Recognizer()
-        with sr.AudioFile(audio_data) as source:
+        with sr.AudioFile(temp_filepath) as source:
             audio_data = recognizer.record(source)
 
-        text = recognizer.recognize_google(audio_data)
-        language = detect(text)
-        
-        if language == 'en':
-            ipa_transcription = ipa.convert(text)
-        else:
-            ipa_transcription = custom_ipa_mapping(text)
+            # Perform speech recognition
+            recognized_text = recognizer.recognize_google(audio_data)
+            language = langdetect.detect(recognized_text)
+
+            # Convert recognized text to IPA
+            if language == 'en':
+                ipa_transcription = ipa.convert(recognized_text)
+            else:
+                ipa_transcription = custom_ipa_mapping(recognized_text)
+
+        # Cleanup - remove temporary file
+        os.remove(temp_filepath)
 
         return jsonify({'ipa': ipa_transcription})
+    
     except sr.UnknownValueError:
         return jsonify({'error': 'Speech recognition could not understand audio'}), 400
     except sr.RequestError as e:
         return jsonify({'error': f'Could not request results from Google Speech Recognition service; {e}'}), 500
+    except langdetect.LangDetectException as e:
+        return jsonify({'error': f'Language detection error: {e}'}), 500
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': f'Error processing audio: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
