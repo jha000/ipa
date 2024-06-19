@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
-import io
 import os
 from pydub import AudioSegment
 import langdetect
+import tempfile
 
 app = Flask(__name__)
 
@@ -73,19 +73,26 @@ def convert_to_ipa_route():
         audio_file = request.files['audio']
         audio_format = audio_file.filename.rsplit('.', 1)[1].lower()
 
-        # Save the file temporarily
-        temp_filepath = 'temp_audio'  # No file extension initially
-        audio_file.save(temp_filepath)
+        # Save the file temporarily using NamedTemporaryFile
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f'.{audio_format}') as temp_audio_file:
+            audio_file.save(temp_audio_file.name)
+            temp_audio_filepath = temp_audio_file.name
+
+        # Check if the file exists after saving
+        if not os.path.exists(temp_audio_filepath):
+            return jsonify({'error': 'File not saved correctly'}), 500
 
         # Check if the uploaded file is WAV, if not convert to WAV
         if audio_format != 'wav':
-            audio = AudioSegment.from_file(temp_filepath, format=audio_format)
-            temp_filepath = temp_filepath + '.wav'
-            audio.export(temp_filepath, format='wav')
+            audio = AudioSegment.from_file(temp_audio_filepath, format=audio_format)
+            temp_wav_filepath = temp_audio_filepath.replace(f'.{audio_format}', '.wav')
+            audio.export(temp_wav_filepath, format='wav')
+        else:
+            temp_wav_filepath = temp_audio_filepath
 
         # Recognize speech from the WAV file
         recognizer = sr.Recognizer()
-        with sr.AudioFile(temp_filepath) as source:
+        with sr.AudioFile(temp_wav_filepath) as source:
             audio_data = recognizer.record(source)
 
             # Perform speech recognition
@@ -98,11 +105,13 @@ def convert_to_ipa_route():
             else:
                 ipa_transcription = custom_ipa_mapping(recognized_text)
 
-        # Cleanup - remove temporary file
-        os.remove(temp_filepath)
+        # Cleanup - remove temporary files
+        os.remove(temp_audio_filepath)
+        if temp_wav_filepath != temp_audio_filepath:
+            os.remove(temp_wav_filepath)
 
         return jsonify({'ipa': ipa_transcription})
-    
+
     except sr.UnknownValueError:
         return jsonify({'error': 'Speech recognition could not understand audio'}), 400
     except sr.RequestError as e:

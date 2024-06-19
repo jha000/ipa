@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #e3e8ea;
     color: #333;
     margin: 0;
     padding-top: 80px; /* Remove this line */
@@ -11,12 +11,10 @@ body {
 }
 
 header {
-    background-color: #343a40;
     color: #fff;
-    padding: 16px;
+    padding: 32px;
     margin-bottom: 50px;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
     left: 0;
@@ -25,27 +23,27 @@ header {
 }
 
 .header-text {
+    color: #000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 100px; /* Adjust as necessary */
 }
 
 header h1 {
     font-size: 1.5em;
-    margin: 10px;
+    margin: 0px;
 }
 
 header p {
     font-size: 1em;
-    margin: 10px;
+    margin: 0px;
 }
 
 .logo {
-    width: 80px;
+    width: 100px;
     position: absolute;
     top: 50%;
-    left: 20px;
+    left: 50px;
     transform: translateY(-50%);
 }
 
@@ -55,13 +53,15 @@ header p {
     align-items: flex-start;
     width: 100%;
     padding: 0 20px;
-    margin-top: 80px; /* Add margin to create space below the header */
+    margin-top: 80px;
 }
 
 .container {
     max-width: 600px;
-    padding: 20px;
-    background-color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    background-color: #e3e8ea;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     flex: 1;
@@ -100,7 +100,7 @@ header p {
 }
 
 .upload-area:hover {
-    background-color: #e9ecef;
+    background-color: #c9d3d8;
 }
 
 .upload-area input {
@@ -184,7 +184,9 @@ header p {
 
 .ipa-viewer {
     max-width: 600px;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
     background-color: #000; /* Dark background color */
     color: #fff; /* White text color */
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -209,7 +211,7 @@ header p {
 footer {
     text-align: center;
     padding: 10px 0;
-    background-color: #212529;
+    background-color: #21262b;
     color: #fff;
     position: fixed;
     bottom: 0;
