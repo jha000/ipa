@@ -1,14 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
+import io
 import os
 from pydub import AudioSegment
 import langdetect
-import tempfile
-import imageio_ffmpeg as ffmpeg
-
-# Set up ffmpeg binary for pydub
-os.environ["FFMPEG_BINARY"] = ffmpeg.get_ffmpeg_exe()
 
 app = Flask(__name__)
 
@@ -78,16 +74,14 @@ def convert_to_ipa_route():
         audio_format = audio_file.filename.rsplit('.', 1)[1].lower()
 
         # Save the file temporarily
-        temp_dir = tempfile.gettempdir()
-        temp_filepath = os.path.join(temp_dir, 'temp_audio')  # No file extension initially
+        temp_filepath = 'temp_audio'  # No file extension initially
         audio_file.save(temp_filepath)
 
         # Check if the uploaded file is WAV, if not convert to WAV
         if audio_format != 'wav':
             audio = AudioSegment.from_file(temp_filepath, format=audio_format)
-            temp_filepath_wav = temp_filepath + '.wav'
-            audio.export(temp_filepath_wav, format='wav')
-            temp_filepath = temp_filepath_wav
+            temp_filepath = temp_filepath + '.wav'
+            audio.export(temp_filepath, format='wav')
 
         # Recognize speech from the WAV file
         recognizer = sr.Recognizer()
