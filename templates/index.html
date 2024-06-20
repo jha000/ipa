@@ -26,7 +26,7 @@
             </div>
             <div class="upload-area" id="upload-area">
                 <div class="upload-content">
-                    <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                    <i class="fas fa-cloud-upload-alt fa-3x"></i>
                     <span>Drag & drop your file here or <label for="audio-upload" style="color: #007bff; text-decoration: underline; cursor: pointer;">choose files</label></span>
                 </div>
                 <input type="file" id="audio-upload">
@@ -40,9 +40,12 @@
 
         <div class="ipa-viewer" id="ipa-viewer">
             <h3>IPA Output:</h3>
-            <div id="output" class="terminal-output"></div>
+            <div class="output-container">
+                <div id="output" class="terminal-output"></div>
+            </div>
             <button id="copy-btn" class="copy-button">Copy</button>
         </div>
+        
     </div>
 
     <footer>

@@ -1,10 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import eng_to_ipa as ipa
 import speech_recognition as sr
-import io
-import os
 from pydub import AudioSegment
 import langdetect
+import io 
 
 app = Flask(__name__)
 
@@ -73,19 +72,19 @@ def convert_to_ipa_route():
         audio_file = request.files['audio']
         audio_format = audio_file.filename.rsplit('.', 1)[1].lower()
 
-        # Save the file temporarily
-        temp_filepath = 'temp_audio'  # No file extension initially
-        audio_file.save(temp_filepath)
+        # Read the file content into memory
+        audio_bytes = audio_file.read()
+        audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes), format=audio_format)
+        
+        # Convert to WAV in memory
+        audio_segment = audio_segment.set_frame_rate(16000).set_channels(1)  # Adjust as needed
+        wav_bytes = io.BytesIO()
+        audio_segment.export(wav_bytes, format='wav')
+        wav_bytes.seek(0)
 
-        # Check if the uploaded file is WAV, if not convert to WAV
-        if audio_format != 'wav':
-            audio = AudioSegment.from_file(temp_filepath, format=audio_format)
-            temp_filepath = temp_filepath + '.wav'
-            audio.export(temp_filepath, format='wav')
-
-        # Recognize speech from the WAV file
+        # Recognize speech from the WAV bytes
         recognizer = sr.Recognizer()
-        with sr.AudioFile(temp_filepath) as source:
+        with sr.AudioFile(wav_bytes) as source:
             audio_data = recognizer.record(source)
 
             # Perform speech recognition
@@ -97,9 +96,6 @@ def convert_to_ipa_route():
                 ipa_transcription = ipa.convert(recognized_text)
             else:
                 ipa_transcription = custom_ipa_mapping(recognized_text)
-
-        # Cleanup - remove temporary file
-        os.remove(temp_filepath)
 
         return jsonify({'ipa': ipa_transcription})
     
