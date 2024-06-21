@@ -7,50 +7,196 @@
     <title>Audio to IPA Converter</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <img src="https://c-huk.cdacb.in/assets/img/cdac%201.png" alt="CDAC Logo" class="logo">
-        <div class="header-text">
-            <h1>Convert Audio to IPA</h1>
-            <p>Effortlessly transform spoken words into International Phonetic Alphabet (IPA) notation</p>
+
+    <header class="header-main">
+
+        <div class="header-container">
+            <div class="header-logos">
+                <img src="https://c-huk.cdacb.in/assets/img/cdac%201.png" alt="CDAC Logo" class="logo">
+                <img src="https://cdac.in/img/cdac-logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="header-text">
+                <h2>Convert Audio to International Phonetic Alphabet (IPA)</h2>
+                <p>Effortlessly transform spoken words into IPA notation <i
+                        class="fas fa-language"></i></p>
+            </div>
+            <div class="logo2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/IPA_in_IPA.svg/330px-IPA_in_IPA.svg.png"
+                    alt="CDAC Logo" class="logo">
+            </div>
         </div>
+
+        <!-- <div class="banner">
+            <img src="https://i.postimg.cc/Bnrq67wp/Screenshot-2024-06-20-231842.png" alt="Banner" class="banner">
+        </div> -->
+
+        <div class="ipa-strip">
+            <div class="ipa-strip-content">
+                <span>ɑ</span>
+                <span>æ</span>
+                <span>ɒ</span>
+                <span>ʌ</span>
+                <span>ɛ</span>
+                <span>ɪ</span>
+                <span>ɒ</span>
+                <span>ɔ</span>
+                <span>ʊ</span>
+                <span>ʔ</span>
+                <span>ð</span>
+                <span>θ</span>
+                <span>ŋ</span>
+                <span>ʃ</span>
+                <span>ʒ</span>
+                <span>tʃ</span>
+                <span>dʒ</span>
+                <span>ɓ</span>
+                <span>ɗ</span>
+                <span>ʄ</span>
+                <span>ɠ</span>
+                <span>ʛ</span>
+                <span>ɦ</span>
+                <span>ɧ</span>
+                <span>ɥ</span>
+                <span>ʜ</span>
+                <span>ɨ</span>
+                <span>ɪ̈</span>
+                <span>ʝ</span>
+                <span>ɭ</span>
+                <span>ɺ</span>
+                <span>ɹ</span>
+                <span>ɻ</span>
+                <span>ɰ</span>
+                <span>ɱ</span>
+                <span>ɲ</span>
+                <span>ɳ</span>
+                <span>ɴ</span>
+                <span>ø</span>
+                <span>œ</span>
+                <span>ɶ</span>
+                <span>ɷ</span>
+                <span>ʘ</span>
+                <span>ɚ</span>
+                <span>ɛ̃</span>
+                <span>ɔ̃</span>
+                <span>ʍ</span>
+                <span>ʡ</span>
+                <span>ʢ</span>
+                <span>ʡ̯</span>
+                <span>ʢ̯</span>
+                <span>ʘ̃</span>
+                <span>ʘ̃ʼ</span>
+                <span>ʬ</span>
+                <span>ʭ</span>
+                <span>ǀ</span>
+                <span>ǃ</span>
+                <span>ǂ</span>
+                <span>ǁ</span>
+                <span>ɿ</span>
+                <span>ʅ</span>
+                <span>ʆ</span>
+                <span>ʐ</span>
+                <span>ʑ</span>
+                <span>ɻ̩</span>
+                <span>ʙ</span>
+                <span>ʜ̯</span>
+                <span>ʢ̣</span>
+                <span>ʡ̣</span>
+                <span>ʕ</span>
+                <span>ʢ̬</span>
+                <span>ʡ̬</span>
+                <span>ʍ̩</span>
+                <span>ɦ̥</span>
+                <span>ʢ̥</span>
+                <span>ʡ̥</span>
+                <span>ʡ̊</span>
+                <span>ʢ̊</span>
+                <span>ɾ̃</span>
+                <span>ɽ̃</span>
+                <span>ɽ̊</span>
+                <span>ɱ̩</span>
+                <span>ɲ̩</span>
+                <span>ŋ̩</span>
+                <span>ʙ̩</span>
+                <span>ʎ̩</span>
+                <span>ɭ̩</span>
+                <span>ʟ̩</span>
+                <span>ɹ̩</span>
+                <span>ɰ̩</span>
+                <span>ɥ̩</span>
+                <span>ɧ̯</span>
+                <span>ʩ</span>
+                <span>ʪ</span>
+                <span>ʫ</span>
+                <span>ʬ̩</span>
+                <span>ʭ̩</span>
+            </div>
+        </div>
+
+
+
     </header>
 
     <div class="main-container">
         <div class="container">
             <div class="upload-description">
-                <h3>Upload File</h3>
+                <h2>Upload File</h2>
                 <p>Upload an audio file to convert its audio to IPA</p>
             </div>
             <div class="upload-area" id="upload-area">
                 <div class="upload-content">
-                    <i class="fas fa-cloud-upload-alt fa-3x"></i>
-                    <span>Drag & drop your file here or <label for="audio-upload" style="color: #007bff; text-decoration: underline; cursor: pointer;">choose files</label></span>
+                    <div class="icon-circle">
+                        <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                    </div>
+                    <span>Drag & drop your file here or</span>
+                    <div>
+                        <label for="audio-upload"
+                            style="color: #4178b4; text-decoration: underline; cursor: pointer; display: block; font-size: 20px;">Choose
+                            files</label>
+                    </div>
                 </div>
                 <input type="file" id="audio-upload">
             </div>
-
             <div id="file-list" class="file-list"></div>
-            <button id="convert-btn">Convert to IPA</button>
+            <button id="convert-btn">Convert to IPA‎ ‎ ‎ <i class="fas fa-sync-alt"></i></button>
             <div id="error"></div>
-            <div id="loading" class="pulse">Converting audio to IPA...</div>
+
         </div>
 
-        <div class="ipa-viewer" id="ipa-viewer">
-            <h3>IPA Output:</h3>
-            <div class="output-container">
-                <div id="output" class="terminal-output"></div>
+        <div class="ipa-viewer-x" id="ipa-viewer">
+            <div class="language-container" style="display: none;">
+                <h2>Convert the below IPA into different languages</h2>
+                <div class="language-select">
+                    <label for="language-select"></label>
+                    <select id="language-select">
+                        <option value="">Select Language:</option>
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="bn">Bengali</option>
+                    </select>
+                </div>
             </div>
-            <button id="copy-btn" class="copy-button">Copy</button>
+
+            <div class="ipa-viewer" id="ipa-viewer-content">
+                <h3>IPA Output:</h3>
+                <div class="output-container">
+                    <div id="output" class="terminal-output"></div>
+                    <div id="hindi-output" class="terminal-output"></div>
+                    <div id="english-output" class="terminal-output"></div>
+                    <div id="bengali-output" class="terminal-output"></div>
+                </div>
+                <button id="copy-btn" class="copy-button">Copy <i class="far fa-copy"></i></button>
+                <div id="loading" class="pulse">Converting audio to IPA... <i class="fas fa-spinner fa-spin"></i></div>
+            </div>
         </div>
-        
     </div>
 
     <footer>
-        <p>Developed by CDAC Kolkata</p>
-        <p>Contact: info@cdac.in | Phone: +91-XXX-XXXXXXX</p>
+        <p>Website owned & maintained by: Centre for Development of Advanced Computing (C-DAC), Kolkata, India.</p>
+        <p>Contact: info@cdac.in | Phone: +91-XXX-XXXXXXX <i class="fas fa-phone"></i></p>
     </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>

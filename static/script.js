@@ -1,11 +1,19 @@
+// JavaScript code for handling the IPA conversion and language selection
+
 const uploadArea = document.getElementById('upload-area');
 const audioUpload = document.getElementById('audio-upload');
 const fileList = document.getElementById('file-list');
 const convertBtn = document.getElementById('convert-btn');
 const outputDiv = document.getElementById('output');
+const hindiOutputDiv = document.getElementById('hindi-output');
+const englishOutputDiv = document.getElementById('english-output');
+const bengaliOutputDiv = document.getElementById('bengali-output');
 const errorDiv = document.getElementById('error');
 const loadingDiv = document.getElementById('loading');
 const copyBtn = document.getElementById('copy-btn');
+const languageSelect = document.getElementById('language-select');
+const languageContainer = document.querySelector('.language-container');
+
 
 uploadArea.addEventListener('click', () => {
     audioUpload.click();
@@ -17,39 +25,47 @@ audioUpload.addEventListener('change', () => {
 });
 
 copyBtn.addEventListener('click', () => {
-    // Select the text inside the typed output div
-    const range = document.createRange();
-    range.selectNode(outputDiv);
-    window.getSelection().removeAllRanges(); // Clear previous selections
-    window.getSelection().addRange(range); // Select the text
-    document.execCommand('copy'); // Copy the selected text to clipboard
-    window.getSelection().removeAllRanges(); // Clear the selection after copying
-    
-    // Change the text inside the copy button to "Copied"
-    copyBtn.textContent = 'Copied';
-    setTimeout(() => {
-        // Reset the text inside the copy button to "Copy" after 2 seconds
-        copyBtn.textContent = 'Copy';
-    }, 3000); // Set the timeout for 2 seconds
+    const selectedViewer = document.querySelector('.ipa-viewer .terminal-output:not([style*="display: none"])');
+    if (selectedViewer && selectedViewer.textContent.trim() !== '') {
+        const range = document.createRange();
+        range.selectNode(selectedViewer);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => {
+            copyBtn.textContent = 'Copy';
+        }, 3000);
+    }
 });
 
 
+languageSelect.addEventListener('change', () => {
+    showSelectedLanguageText(languageSelect.value);
+});
+
 function handleFiles(files) {
-    fileList.innerHTML = ''; // Clear previous file list
-    outputDiv.textContent = ''; // Clear previous IPA text
-    errorDiv.textContent = ''; // Clear previous error message
+    fileList.innerHTML = '';
+    outputDiv.textContent = '';
+    hindiOutputDiv.textContent = '';
+    englishOutputDiv.textContent = '';
+    bengaliOutputDiv.textContent = '';
+    errorDiv.textContent = '';
     copyBtn.style.display = 'none';
+    languageContainer.style.display = 'none';
+
+    languageSelect.value = '';
 
     for (const file of files) {
         const listItem = document.createElement('div');
         listItem.classList.add('file-item');
 
-        // Create a heading for the uploaded file
-        const fileHeading = document.createElement('p');
+        const fileHeading = document.createElement('h3');
         fileHeading.textContent = 'Uploaded File:';
         listItem.appendChild(fileHeading);
 
-        // Create a span for the file name
         const fileName = document.createElement('span');
         fileName.textContent = file.name;
         const fileSize = document.createElement('span');
@@ -60,11 +76,11 @@ function handleFiles(files) {
         fileList.appendChild(listItem);
     }
 
-    convertBtn.style.display = 'block'; // Show convert button
+    convertBtn.style.display = 'block';
 }
 
 convertBtn.addEventListener('click', () => {
-    loadingDiv.style.display = 'block'; // Show loading animation
+    loadingDiv.style.display = 'block';
     convertAudioToIPA();
 });
 
@@ -80,26 +96,53 @@ function convertAudioToIPA() {
         })
         .then(response => response.json())
         .then(data => {
-            loadingDiv.style.display = 'none'; // Hide loading animation
+            loadingDiv.style.display = 'none';
             if (data.ipa) {
                 outputDiv.textContent = `${data.ipa}`;
+                hindiOutputDiv.textContent = `${data.hindi}`;
+                englishOutputDiv.textContent = `${data.english}`;
+                bengaliOutputDiv.textContent = `${data.bengali}`;
                 errorDiv.textContent = '';
-                // Show copy button only if there is output
                 copyBtn.style.display = 'block';
-            } else {
-                outputDiv.textContent = '';
-                errorDiv.textContent = data.error || 'Error converting audio to IPA.';
-                // Hide copy button if there is no output
+                languageContainer.style.display = 'block';
+
+                // Show only IPA by default after conversion
+                outputDiv.style.display = 'block';
+                hindiOutputDiv.style.display = 'none';
+                englishOutputDiv.style.display = 'none';
+                bengaliOutputDiv.style.display = 'none';
+            } else if (data.error) {
+                errorDiv.textContent = `Error: ${data.error}`;
                 copyBtn.style.display = 'none';
+                languageContainer.style.display = 'none';
             }
         })
         .catch(error => {
-            loadingDiv.style.display = 'none'; // Hide loading animation
-            outputDiv.textContent = '';
-            errorDiv.textContent = 'Error uploading audio file.';
-            console.error('Error:', error);
-            // Hide copy button if there is an error
+            loadingDiv.style.display = 'none';
+            errorDiv.textContent = `Error: ${error.message}`;
             copyBtn.style.display = 'none';
         });
+    }
+}
+
+function showSelectedLanguageText(selectedLanguage) {
+    outputDiv.style.display = 'none';
+    hindiOutputDiv.style.display = 'none';
+    englishOutputDiv.style.display = 'none';
+    bengaliOutputDiv.style.display = 'none';
+
+    switch (selectedLanguage) {
+        case 'en':
+            englishOutputDiv.style.display = 'block';
+            break;
+        case 'hi':
+            hindiOutputDiv.style.display = 'block';
+            break;
+        case 'bn':
+            bengaliOutputDiv.style.display = 'block';
+            break;
+        default:
+            outputDiv.style.display = 'block';
+            break;
     }
 }

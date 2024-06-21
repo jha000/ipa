@@ -3,13 +3,19 @@ import eng_to_ipa as ipa
 import speech_recognition as sr
 from pydub import AudioSegment
 import langdetect
-import io 
+import io
+from indic_transliteration import sanscript
+from indic_transliteration.sanscript import transliterate
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('index.html')
+
+def split_text(text, length=100):
+    # Splitting the text into smaller segments
+    return [text[i:i+length] for i in range(0, len(text), length)]
 
 def custom_ipa_mapping(text):
     ipa_map = {
@@ -97,8 +103,17 @@ def convert_to_ipa_route():
             else:
                 ipa_transcription = custom_ipa_mapping(recognized_text)
 
-        return jsonify({'ipa': ipa_transcription})
-    
+        # Transliterate recognized text to English, Hindi, and Bengali
+        transliterated_hindi = transliterate(recognized_text, sanscript.ITRANS, sanscript.DEVANAGARI)
+        transliterated_bengali = transliterate(recognized_text, sanscript.ITRANS, sanscript.BENGALI)
+
+        return jsonify({
+            'ipa': ipa_transcription,
+            'english': recognized_text,
+            'hindi': transliterated_hindi,
+            'bengali': transliterated_bengali
+        })
+
     except sr.UnknownValueError:
         return jsonify({'error': 'Speech recognition could not understand audio'}), 400
     except sr.RequestError as e:

@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #e3e8ea;
     color: #333;
     margin: 0;
@@ -11,7 +11,6 @@ body {
 
 header {
     color: #fff;
-    padding: 32px;
     margin-bottom: 50px;
     text-align: center;
     position: fixed;
@@ -21,30 +20,77 @@ header {
     z-index: 1000; 
 }
 
-.header-text {
-    color: #000;
+.header-container {
+    padding: 16px;
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
-header h1 {
-    font-size: 1.5em;
-    margin: 0px;
+.header-logos {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-left: 60px;
 }
 
-header p {
-    font-size: 1em;
-    margin: 0px;
+.header-logos img {
+    max-height: 60px; /* Adjust this value based on your logo size */
+    margin-right: 10px; /* Space between the logos */
 }
 
-.logo {
-    width: 100px;
-    position: absolute;
-    top: 50%;
-    left: 50px;
-    transform: translateY(-50%);
+.logo2 img {
+    max-height: 40px;
+    margin-left: 40px; /* Space between the logos */
 }
+
+.header-text h2,
+.header-text p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    color: #21262b;
+}
+
+
+.header-text h1 i,
+.header-text p i {
+    margin-left: 10px; /* Space between text and icon */
+}
+
+/* .banner {
+    width: 100%;
+} */
+
+.ipa-strip {
+    width: 100%;
+    background-color: #000;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+.ipa-strip-content {
+    display: inline-block;
+    animation: slide 100s linear infinite;
+    white-space: nowrap;
+    color: white;
+}
+
+.ipa-strip-content span {
+    display: inline-block;
+    padding: 0 20px;
+    font-size: 16px;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 
 .main-container {
     display: flex;
@@ -52,7 +98,7 @@ header p {
     align-items: flex-start;
     width: 100%;
     padding: 0 20px;
-    margin-top: 150px;
+    margin-top: 170px;
 }
 
 .container {
@@ -72,9 +118,9 @@ header p {
 }
 
 .upload-area {
-    border: 2px dashed #5d5d5d;
+    border: 2px dashed #305f99;
     border-radius: 20px;
-    padding: 60px;
+    padding: 50px;
     cursor: pointer;
     margin-bottom: 20px;
     display: flex;
@@ -94,7 +140,8 @@ header p {
 
 .upload-content span {
     color: #333;
-    font-size: 1.2em;
+    font-size: 1.5em;
+    margin: 16px;
 }
 
 .upload-area:hover {
@@ -105,12 +152,16 @@ header p {
     display: none;
 }
 
+.icon-circle i {
+    color: #4178b4;
+}
+
 #convert-btn {
     display: none;
     padding: 10px 20px;
     font-size: 1.2em;
     cursor: pointer;
-    background-color: #007bff;
+    background-color: #284c7c;
     color: #fff;
     border: none;
     margin-top: 16px;
@@ -119,7 +170,7 @@ header p {
 }
 
 #convert-btn:hover {
-    background-color: #0056b3;
+    background-color: #305f99;
 }
 
 #output,
@@ -141,7 +192,7 @@ header p {
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 1.4em;
-    color: #343a40;
+    color: #fff;
     text-align: center;
 }
 
@@ -189,19 +240,49 @@ header p {
     background-color: #6f6f6f; /* Darker shade of material grey for hover */
 }
 
-.ipa-viewer {
+.language-container {
+    display: none;
+    margin-bottom: 16px;
+}
+
+
+.language-select {
+    margin-bottom: 10px;
+}
+
+.language-select select {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 3px;
+    background-color: transparent;
+}
+
+.language-select label {
+    font-size: 16px;
+}
+
+.language-select option {
+    font-size: 14px;
+}
+
+.ipa-viewer-x {
     max-width: 600px;
-    padding: 20px;
+    margin-left: 20px;
+    margin-bottom: 16px;
+    flex: 1; 
+}
+
+
+.ipa-viewer {
     background-color: #000; /* Dark background color */
     color: #fff; /* White text color */
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    margin-left: 20px;
+    padding: 20px;
     font-family: 'Courier New', Courier, monospace;
     overflow-y: auto; /* Add scroll view if content exceeds */
-    max-height: 310px;
-    flex: 1; 
-    min-height: 310px;/* Fixed height for the IPA viewer */
+    max-height: 317px;
+    min-height: 317px;/* Fixed height for the IPA viewer */
     position: relative; /* Position the copy button relative to the IPA viewer */
 }
 
@@ -226,7 +307,7 @@ footer {
 }
 
 footer p {
-    margin: 0;
+    margin: 5px;
     font-size: 1em;
 }
 
